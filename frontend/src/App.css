@@ -1,7 +1,45 @@
+/* Reset */
+* { box-sizing: border-box; }
+
 #app {
     height: 100vh;
-    text-align: center;
 }
+
+/* Button styles */
+.btn-primary {
+    background: #337ab7;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-primary:hover { background: #286090; }
+.btn-primary:disabled { background: #8ab4d8; cursor: not-allowed; }
+
+.btn-default {
+    background: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-default:hover { background: #eee; }
+
+.btn-success {
+    background: #5cb85c;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-success:hover { background: #449d44; }
+.btn-success:disabled { background: #a3d5a3; cursor: not-allowed; }
 
 #logo {
     display: block;
