@@ -18,6 +18,10 @@ export function DefaultSaveFileName(arg1) {
   return window['go']['main']['App']['DefaultSaveFileName'](arg1);
 }
 
+export function GetAnalysisTable(arg1, arg2, arg3, arg4) {
+  return window['go']['main']['App']['GetAnalysisTable'](arg1, arg2, arg3, arg4);
+}
+
 export function LoadCSVFile(arg1, arg2) {
   return window['go']['main']['App']['LoadCSVFile'](arg1, arg2);
 }

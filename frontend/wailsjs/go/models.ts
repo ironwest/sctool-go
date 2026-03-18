@@ -1,5 +1,41 @@
 export namespace main {
 	
+	export class AnalysisTableResult {
+	    ok: boolean;
+	    error?: string;
+	    groupVar: string;
+	    rows: score.AnalysisTableRow[];
+	
+	    static createFrom(source: any = {}) {
+	        return new AnalysisTableResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.ok = source["ok"];
+	        this.error = source["error"];
+	        this.groupVar = source["groupVar"];
+	        this.rows = this.convertValues(source["rows"], score.AnalysisTableRow);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class ApplyResult {
 	    ok: boolean;
 	    error?: string;
@@ -175,6 +211,37 @@ export namespace main {
 		    }
 		    return a;
 		}
+	}
+
+}
+
+export namespace score {
+	
+	export class AnalysisTableRow {
+	    groupLabel: string;
+	    isTotal: boolean;
+	    n: number;
+	    incompleteN: number;
+	    highStressN: number;
+	    highStressRatio: number;
+	    totalRisk: number;
+	    hensati: Record<string, number>;
+	
+	    static createFrom(source: any = {}) {
+	        return new AnalysisTableRow(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.groupLabel = source["groupLabel"];
+	        this.isTotal = source["isTotal"];
+	        this.n = source["n"];
+	        this.incompleteN = source["incompleteN"];
+	        this.highStressN = source["highStressN"];
+	        this.highStressRatio = source["highStressRatio"];
+	        this.totalRisk = source["totalRisk"];
+	        this.hensati = source["hensati"];
+	    }
 	}
 
 }

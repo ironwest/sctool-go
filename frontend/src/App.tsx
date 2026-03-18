@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import './App.css';
 import { WizardPage } from './pages/WizardPage';
+import { AnalysisTablePage } from './pages/AnalysisTablePage';
+import { useWizardStore } from './store/wizardStore';
 
-type NavItem = 'wizard' | 'analysis';
+type NavItem = 'wizard' | 'analysis_table';
 
 function App() {
   const [nav, setNav] = useState<NavItem>('wizard');
+  const { yearLabel } = useWizardStore();
 
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'sans-serif', fontSize: 14 }}>
@@ -29,20 +32,15 @@ function App() {
         <NavButton active={nav === 'wizard'} onClick={() => setNav('wizard')}>
           📁 データ設定
         </NavButton>
-        <NavButton active={nav === 'analysis'} onClick={() => setNav('analysis')}>
-          📊 分析（準備中）
+        <NavButton active={nav === 'analysis_table'} onClick={() => setNav('analysis_table')}>
+          📊 偏差値表
         </NavButton>
       </nav>
 
       {/* Main content */}
       <main style={{ flex: 1, overflowY: 'auto', background: '#f5f5f5' }}>
         {nav === 'wizard' && <WizardPage />}
-        {nav === 'analysis' && (
-          <div style={{ padding: 24 }}>
-            <h3>分析機能は Phase 3〜5 で実装予定です</h3>
-            <p>まず「データ設定」からデータを読み込んでください。</p>
-          </div>
-        )}
+        {nav === 'analysis_table' && <AnalysisTablePage yearLabel={yearLabel} />}
       </main>
     </div>
   );

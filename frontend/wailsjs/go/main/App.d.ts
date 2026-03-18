@@ -10,6 +10,8 @@ export function DefaultConfigSaveFileName(arg1:string,arg2:string):Promise<strin
 
 export function DefaultSaveFileName(arg1:string):Promise<string>;
 
+export function GetAnalysisTable(arg1:string,arg2:string,arg3:string,arg4:string):Promise<main.AnalysisTableResult>;
+
 export function LoadCSVFile(arg1:string,arg2:string):Promise<main.CSVLoadResult>;
 
 export function LoadColumnMapConfig(arg1:string):Promise<main.ColumnMapConfig>;

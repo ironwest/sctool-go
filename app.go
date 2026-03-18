@@ -119,6 +119,14 @@ type ApplyResult struct {
 	IncompleteN  int    `json:"incompleteN"`
 }
 
+// AnalysisTableResult is the response for GetAnalysisTable.
+type AnalysisTableResult struct {
+	OK       bool                    `json:"ok"`
+	Error    string                  `json:"error,omitempty"`
+	GroupVar string                  `json:"groupVar"`
+	Rows     []score.AnalysisTableRow `json:"rows"`
+}
+
 // NewApp creates a new App application struct
 func NewApp() *App {
 	return &App{
@@ -529,6 +537,38 @@ func (a *App) DefaultSaveFileName(yearLabel string) string {
 // DefaultConfigSaveFileName returns a timestamped default filename for config JSON.
 func (a *App) DefaultConfigSaveFileName(kind string, yearLabel string) string {
 	return fmt.Sprintf("%s_config_%s_%s.json", kind, yearLabel, time.Now().Format("20060102"))
+}
+
+// GetAnalysisTable computes the 偏差値表 for the given year and grouping options.
+//
+// groupVar: "dept1" | "dept2" | "dept1_dept2" | "age_kubun" | "gender"
+// longOrCross: "long" | "cross"
+// gyousyu: industry name, e.g. "全産業"
+func (a *App) GetAnalysisTable(yearLabel string, groupVar string, longOrCross string, gyousyu string) AnalysisTableResult {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
+	session := a.getSession(yearLabel)
+	if len(session.Processed) == 0 {
+		return AnalysisTableResult{OK: false, Error: "処理済みデータがありません。先にデータを読み込んでください。"}
+	}
+
+	rows := score.GetAnalysisHyou(
+		session.Processed,
+		groupVar,
+		longOrCross,
+		gyousyu,
+		a.questions,
+		a.benchmarks,
+		a.labels,
+		a.riskCoefs,
+	)
+
+	return AnalysisTableResult{
+		OK:       true,
+		GroupVar: groupVar,
+		Rows:     rows,
+	}
 }
 
 // --- helpers ---
